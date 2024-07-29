@@ -4,6 +4,11 @@ import jwt from 'jsonwebtoken'
 
 const JWT_SECRET_KEY = "nfdandfadsiofs23443";
 
+const createToken = (data) => {
+    const token = jwt.sign(data, JWT_SECRET_KEY);
+    return token;
+}
+
 
 export const signUp = async (req, res) => {
     const { name, email, password } = req.body;
@@ -38,7 +43,7 @@ export const signIn = async (req, res) => {
         if (!isPasswordCorrect) {
             return res.status(400).json({ success: false, message: "Password Incorrect" });
         }
-        const token = jwt.sign({ id: user._id }, JWT_SECRET_KEY);
+        const token = createToken(user._id);
         res.status(200).json({ success: true, message: "Login Successful", token })
 
     } catch (error) {
